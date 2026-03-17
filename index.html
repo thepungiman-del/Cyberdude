@@ -3,38 +3,41 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Thunkable Voice Bridge</title>
+    <title>Cyberdude AI</title>
     
     <script src="https://thunkable.github.io/webviewer-extension/thunkableWebviewerExtension.js" type="text/javascript"></script>
-    
-    <style>
-        body { margin: 0; padding: 0; font-family: sans-serif; }
-    </style>
 </head>
 <body>
 
     <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/v2/bootstrap.js?v=1"></script>
     <df-messenger
       intent="WELCOME"
-      chat-title="AI Assistant"
-      agent-id="cyberdude-ffpp"
+      chat-title="Cyberdude Assistant"
+      agent-id="YOUR_AGENT_ID_HERE" 
       language-code="en"
     ></df-messenger>
 
     <script>
-        // This function detects when the bot sends a text response
+        // This waits for the bot to finish its sentence
         window.addEventListener('df-response-received', function (event) {
             
-            // Extract the text message from the Dialogflow JSON response
+            // This line pulls the text out of the bot's "brain"
             const botText = event.detail.data?.messages?.[0]?.text?.text?.[0] 
                            || event.detail.response?.queryResult?.fulfillmentText;
 
-            if (botText) {
-                // This line sends the text to your Thunkable 'receivesMessage' block
+            if (botText && botText.trim() !== "") {
+                // This line "shouts" the text to your Thunkable blocks
                 ThunkableWebviewerExtension.postMessage(botText);
             }
         });
     </script>
 
+    <style>
+        /* Optional: Makes the chat look better in the Web Viewer */
+        body { margin: 0; padding: 0; }
+        df-messenger {
+            --df-messenger-button-titlebar-color: #4285f4;
+        }
+    </style>
 </body>
 </html>
